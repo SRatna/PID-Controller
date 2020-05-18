@@ -39,6 +39,7 @@ Fellow students have put together a guide to Windows set-up for the project [her
 
 Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 
+
 ## Reflection
 
 I will here describe the role of each hyperparameters and how I tuned them.
@@ -55,12 +56,16 @@ This factor plays great role in the prevention of overshoot and oscillation. It 
 ### Tuning
 Initially I started with following coefficients:
 
+|   | Steering  |
+|---|---|
 | K(P) |  0.5 |
 | K(I)  | 0.025  |
 | K(D)  | 0.75  |
 
-Due to small K(D), the vehicle suffered from ocillations and it quickly got out of the track. I then played around and tried increasing K(D) upto 3 and it prevented overshooting and the vehicle didn't leave the track. Decreasing K(P) to 2 also helped in preventing oscillations and thus I came to the following final coefficients:
+Due to small K(D), the vehicle suffered from oscillations and it quickly got out of the track. I then played around and tried increasing K(D) upto 3 and it prevented overshooting and the vehicle didn't leave the track. Decreasing K(P) to 2 also helped in preventing oscillations and thus I came to the following final coefficients:
 
+|   | Steering  |
+|---|---|
 | K(P) |  0.2 |
 | K(I)  | 0.0025  |
 | K(D)  | 3.5  |
