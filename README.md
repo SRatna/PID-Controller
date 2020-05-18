@@ -1,7 +1,9 @@
-# CarND-Controls-PID
+# PID Controller for Self Driving Car
 Self-Driving Car Engineer Nanodegree Program
 
 ---
+
+I have developed a PID controller in c++ that successfully drives the vehicle around the track by using the cross track error (CTE) provided by the driving simulator.
 
 ## Dependencies
 
@@ -37,62 +39,28 @@ Fellow students have put together a guide to Windows set-up for the project [her
 
 Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 
-## Editor Settings
+## Reflection
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+I will here describe the role of each hyperparameters and how I tuned them.
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+### Proportional (P)
+This factor tries to reduce the error proportionally but it has the tendency to overshoot and thus setting large value will make the vehicle go out of track and it also causes the oscillation of the vehicle unlesss it is balanced by other factors.
 
-## Code Style
+### Integral (I)
+This factor accumulates all the previous error terms and act upon it according to the provided coefficient. If we give large coefficient, it will surely takes the vehicle out of track so we need to choose same value for it and it mostly helps if the system has some internal bias like bias in the steering angle.
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+### Derivate (D)
+This factor plays great role in the prevention of overshoot and oscillation. It takes into account the rate of change of error and thus it will dampen the sudden change in the error term and that inturn prevents overshooting. So, we need to choose somewhat bigger value for it.
 
-## Project Instructions and Rubric
+### Tuning
+Initially I started with following coefficients:
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+| K(P) |  0.5 |
+| K(I)  | 0.025  |
+| K(D)  | 0.75  |
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+Due to small K(D), the vehicle suffered from ocillations and it quickly got out of the track. I then played around and tried increasing K(D) upto 3 and it prevented overshooting and the vehicle didn't leave the track. Decreasing K(P) to 2 also helped in preventing oscillations and thus I came to the following final coefficients:
 
-## Hints!
-
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+| K(P) |  0.2 |
+| K(I)  | 0.0025  |
+| K(D)  | 3.5  |
